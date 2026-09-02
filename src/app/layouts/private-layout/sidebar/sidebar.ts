@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Flowbite } from '../../../core/services/flowbite/flowbite';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   imports: [],
@@ -6,4 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.css',
   templateUrl: './sidebar.html',
 })
-export class Sidebar {}
+export class Sidebar {
+  private flowbite = inject(Flowbite);
+  ngOnInit(): void {
+    this.flowbite.loadFlowbite((flowbite) => {
+      initFlowbite();
+    });
+  }
+}
