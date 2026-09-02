@@ -42,20 +42,20 @@ export const routes: Routes = [
         loadComponent: () => import('./features/tasks/task-list/task-list').then((c) => c.TaskList),
         title: 'Tasks',
       },
-      {
-        path: 'projects/:id',
-        loadComponent: () =>
-          import('./features/projects/project-details/project-details').then(
-            (c) => c.ProjectDetails,
-          ),
-        title: 'Project Details',
-      },
-      {
-        path: 'tasks/:id',
-        loadComponent: () =>
-          import('./features/tasks/task-details/task-details').then((c) => c.TaskDetails),
-        title: 'Task Details',
-      },
+      // {
+      //   path: 'projects/:id',
+      //   loadComponent: () =>
+      //     import('./features/projects/project-details/project-details').then(
+      //       (c) => c.ProjectDetails,
+      //     ),
+      //   title: 'Project Details',
+      // },
+      // {
+      //   path: 'tasks/:id',
+      //   loadComponent: () =>
+      //     import('./features/tasks/task-details/task-details').then((c) => c.TaskDetails),
+      //   title: 'Task Details',
+      // },
       {
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((c) => c.Settings),
