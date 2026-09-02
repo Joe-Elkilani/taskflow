@@ -38,9 +38,20 @@ export const routes: Routes = [
         title: 'Projects',
       },
       {
+        path: 'projectsform',
+        loadComponent: () =>
+          import('./features/projects/project-form/project-form').then((c) => c.ProjectForm),
+        title: 'Projects Form',
+      },
+      {
         path: 'tasks',
         loadComponent: () => import('./features/tasks/task-list/task-list').then((c) => c.TaskList),
         title: 'Tasks',
+      },
+      {
+        path: 'tasksform',
+        loadComponent: () => import('./features/tasks/task-form/task-form').then((c) => c.TaskForm),
+        title: 'Tasks Form',
       },
       // {
       //   path: 'projects/:id',
