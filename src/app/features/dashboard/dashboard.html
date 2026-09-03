@@ -1,0 +1,119 @@
+<header>
+  <div
+    class="bg-white flex items-center flex-wrap gap-3 justify-between px-4 py-3 border-b border-[#e7eef3]"
+  >
+    <form class="max-w-sm">
+      <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only"
+        >Search</label
+      >
+      <div class="relative">
+        <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
+          <svg
+            class="w-5 h-5 text-[#a0a7ad]"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="search"
+          id="search"
+          class="block w-full p-3 ps-9 bg-[#edf1f4] border border-default-medium text-[#a0a7ad] text-sm rounded-base focus:ring-[#e7eef3] focus:border-[#e7eef3] shadow-xs placeholder:text-[#a0a7ad]"
+          placeholder="Global, Search..."
+          required
+        />
+      </div>
+    </form>
+    <div class="flex items-center gap-4">
+      <a href="#"><i class="fa-regular fa-bell text-[#615d5f] text-[22px]"></i></a>
+      <a href="#"><i class="fa-regular fa-circle-question text-[#615d5f] text-[22px]"></i></a>
+      <div class="flex items-center gap-2">
+        <h4 class="capitalize text-xl text-[#615d5f]">yousef</h4>
+        <img src="/imgs/avatar.jpg" alt="Profile Image" class="w-8 h-8 rounded-full" />
+        <i class="fa-solid fa-chevron-down text-[#615d5f] text-sm"></i>
+      </div>
+    </div>
+  </div>
+  <div class="bg-[#fbfdfc] px-4 py-3 border-b-2 border-[#e7eef3]">
+    <a routerLink="/dashboard" class="text-[#615d5f] cursor-pointer text-lg font-normal">
+      Dashboard / <span class="text-[#a0a7ad]">Overview</span>
+    </a>
+  </div>
+</header>
+<div class="p-4">
+  <div class="flex items-center gap-3 flex-wrap text-center sm:text-left justify-between">
+    <div>
+      <h1 class="text-4xl text-[#2c2d34] font-extrabold">Welcome Back, Yousef!</h1>
+      <div class="flex items-center gap-5 flex-wrap mt-3">
+        <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
+          <h3 class="text-lg">Total Projects</h3>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">
+            8
+            <div class="flex items-center gap-2 px-3 py-2 bg-green-50 rounded-lg">
+              <svg class="w-10 h-7 text-green-700/80 opacity-70" viewBox="0 0 64 32" fill="none">
+                <path
+                  d="M2 25 L12 20 L20 22 L30 12 L38 16 L48 7 L58 10"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <span class="text-green-700/80 text-sm font-medium"> w trend </span>
+            </div>
+          </div>
+        </div>
+        <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
+          <h3 class="text-lg">Open Tasks</h3>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">28</div>
+        </div>
+        <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
+          <h3 class="text-lg">Due Today</h3>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">4</div>
+        </div>
+        <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
+          <h3 class="text-lg">Completed Tasks</h3>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">115</div>
+        </div>
+      </div>
+    </div>
+    <div class="border-[#ecedef] flex flex-col gap-2 border flex-1 bg-white rounded-lg py-3 px-5">
+      <h3 class="text-[#292a2d]">Quick Actions</h3>
+      <button
+        class="bg-[#142030] text-white rounded-md border hover:text-[#212123] transition duration-500 hover:bg-white hover:border-[#eeeeee] border-[#0d151e] cursor-pointer text-md font-normal py-1 px-10"
+      >
+        New Project
+      </button>
+      <button
+        class="text-[#212123] bg-white rounded-md border border-[#eeeeee] transition duration-500 hover:text-white hover:bg-[#142030] hover:border-[#212123] cursor-pointer text-md font-normal py-1 px-10"
+      >
+        New Tasks
+      </button>
+    </div>
+  </div>
+  <div class="flex">
+    <div class="border-[#ecedef] border bg-white rounded-lg py-3 px-5">
+      <h2>Recent Projects</h2>
+      <div class="border-[#ecedef] border bg-white flex rounded-lg py-3 px-5">
+        <div>
+          <i class="fa-solid fa-briefcase"></i>
+        </div>
+        <div>
+          <h3>Project Name</h3>
+        </div>
+      </div>
+    </div>
+    <div></div>
+  </div>
+</div>
