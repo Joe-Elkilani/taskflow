@@ -42,14 +42,16 @@ export class Register {
     { validators: this.passwordsMatchValidator },
   );
   onSubmit() {
-    this.auth.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Registration failed:', err);
-      },
-    });
+    if (this.registerForm.valid) {
+      this.auth.register(this.registerForm.value).subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error('Registration failed:', err);
+        },
+      });
+    }
   }
   passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
