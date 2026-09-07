@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'http://localhost:5163/api/',
+  apiUrl: 'https://taskflowbackend.runasp.net/api/',
 };
