@@ -1,0 +1,133 @@
+<section class="bg-[#f5f6f8] flex items-center justify-center p-10">
+  <div class="w-full max-w-sm bg-white rounded-lg shadow-md p-5">
+    <div class="flex items-center justify-center mb-2 w-full">
+      <img src="/imgs/taskflow-logo-dark.png" class="w-37.5" alt="TaskFlow Logo" />
+    </div>
+    <h1 class="text-2xl font-bold text-heading mb-2 text-center">Create Your Account</h1>
+    <p class="text-body mb-4 text-center">
+      Start managing your projects and tasks<br />with TaskFlow
+    </p>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-5">
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="John"
+          formControlName="fullName"
+          required
+        />
+        @let fullNameControl = registerForm.get('fullName');
+        @if (fullNameControl?.invalid && fullNameControl?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (fullNameControl?.hasError('required')) {
+              Full name is required.
+            } @else if (fullNameControl?.hasError('minlength')) {
+              Full name must be at least 3 characters.
+            } @else if (fullNameControl?.hasError('maxlength')) {
+              Full name must not exceed 50 characters.
+            }
+          </p>
+        }
+      </div>
+      <div class="mb-5">
+        <input
+          type="email"
+          id="email"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="john.doe@company.com"
+          formControlName="email"
+          required
+        />
+        @let emailcontrol = registerForm.get('email');
+        @if (emailcontrol?.invalid && emailcontrol?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (emailcontrol?.hasError('required')) {
+              Email is required.
+            } @else if (emailcontrol?.hasError('email')) {
+              Please enter a valid email address.
+            } @else if (emailcontrol?.hasError('maxlength')) {
+              Email must not exceed 100 characters.
+            }
+          </p>
+        }
+      </div>
+      <div class="mb-5">
+        <input
+          type="password"
+          id="password"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="•••••••••"
+          formControlName="password"
+          required
+        />
+        @let passwordcontrol = registerForm.get('password');
+        @if (passwordcontrol?.invalid && passwordcontrol?.touched) {
+          <div
+            class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle"
+            role="alert"
+          >
+            <span class="sr-only">Danger</span>
+            <div>
+              <span class="font-medium">Ensure that these requirements are met:</span>
+              <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+                <li>At least 8 characters</li>
+                <li>At least one lowercase and one uppercase letter</li>
+                <li>At least one number</li>
+                <li>At least one special character, e.g., ! @ # $ % &</li>
+              </ul>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="mb-5">
+        <input
+          type="password"
+          id="confirmPassword"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="•••••••••"
+          formControlName="confirmPassword"
+          required
+        />
+        @let confirmpasswordcontrol = registerForm.get('confirmPassword');
+        @if (confirmpasswordcontrol?.invalid && confirmpasswordcontrol?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">Please confirm your password.</p>
+        }
+        @if (registerForm.hasError('passwordsMismatch') && confirmpasswordcontrol?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">Passwords do not match.</p>
+        }
+      </div>
+      <div class="mb-6">
+        <div>
+          <div class="flex items-center h-5">
+            <input
+              id="remember"
+              type="checkbox"
+              value=""
+              formControlName="terms"
+              class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
+              required
+            />
+            <label for="remember" class="ms-2 text-sm font-medium text-heading"
+              >I agree with the
+              <a href="#" class="text-fg-brand hover:underline">terms and conditions</a>.</label
+            >
+          </div>
+          @let termsControl = registerForm.get('terms');
+          @if (termsControl?.invalid && termsControl?.touched) {
+            <p class="mt-1.5 text-sm text-fg-danger-strong w-full">
+              You must agree to the terms and conditions.
+            </p>
+          }
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="text-white bg-brand box-border cursor-pointer border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</section>

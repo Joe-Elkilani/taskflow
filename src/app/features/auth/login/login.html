@@ -1,1 +1,69 @@
-<p>login works!</p>
+<section class="bg-[#f5f6f8] flex items-center justify-center p-10">
+  <div class="w-full max-w-sm bg-white rounded-lg shadow-md p-5">
+    <div class="flex items-center justify-center mb-2 w-full">
+      <img src="/imgs/taskflow-logo-dark.png" class="w-37.5" alt="TaskFlow Logo" />
+    </div>
+    <h1 class="text-2xl font-bold text-heading mb-2 text-center">Create Your Account</h1>
+    <p class="text-body mb-4 text-center">
+      Start managing your projects and tasks<br />with TaskFlow
+    </p>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-5">
+        <input
+          type="email"
+          id="email"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="john.doe@company.com"
+          formControlName="email"
+          required
+        />
+        @let emailcontrol = loginForm.get('email');
+        @if (emailcontrol?.invalid && emailcontrol?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (emailcontrol?.hasError('required')) {
+              Email is required.
+            } @else if (emailcontrol?.hasError('email')) {
+              Please enter a valid email address.
+            } @else if (emailcontrol?.hasError('maxlength')) {
+              Email must not exceed 100 characters.
+            }
+          </p>
+        }
+      </div>
+      <div class="mb-5">
+        <input
+          type="password"
+          id="password"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="•••••••••"
+          formControlName="password"
+          required
+        />
+        @let passwordcontrol = loginForm.get('password');
+        @if (passwordcontrol?.invalid && passwordcontrol?.touched) {
+          <div
+            class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle"
+            role="alert"
+          >
+            <span class="sr-only">Danger</span>
+            <div>
+              <span class="font-medium">Ensure that these requirements are met:</span>
+              <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
+                <li>At least 8 characters</li>
+                <li>At least one lowercase and one uppercase letter</li>
+                <li>At least one number</li>
+                <li>At least one special character, e.g., ! @ # $ % &</li>
+              </ul>
+            </div>
+          </div>
+        }
+      </div>
+      <button
+        type="submit"
+        class="text-white bg-brand box-border cursor-pointer border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</section>

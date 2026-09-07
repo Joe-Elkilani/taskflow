@@ -1,1 +1,36 @@
-<p>project-card works!</p>
+<div class="border-[#ecedef] w-full border bg-white flex gap-3 rounded-lg py-3 px-5">
+  <div class="flex items-center justify-center bg-[#e5f8ee] rounded-md w-12 h-12">
+    <i [class]="project().icon + ' ' + project().iconColor"></i>
+  </div>
+  <div class="flex flex-col gap-2 w-full">
+    <h3>{{ project().name }}</h3>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        @for (img of project().images.slice(0, 4); track $index) {
+          <img
+            [src]="img"
+            [alt]="'Project image ' + $index"
+            class="w-6 h-6 object-cover rounded-full border border-white -ml-2 first:ml-0"
+          />
+        }
+        @if (project().images.length > 4) {
+          <div
+            class="w-7 h-7 bg-gray-200 text-md font-medium rounded-full flex items-center justify-center border border-white -ml-2 first:ml-0"
+          >
+            +{{ project().images.length - 4 }}
+          </div>
+        }
+      </div>
+      <div>
+        <span>{{ project().progress }}</span
+        >% done
+      </div>
+    </div>
+    <div class="bg-[#e1e2e4] h-2 rounded-md relative">
+      <div
+        [style.width]="project().progress + '%'"
+        class="bg-[#4a75a7] h-full rounded-md absolute top-0 left-0"
+      ></div>
+    </div>
+  </div>
+</div>

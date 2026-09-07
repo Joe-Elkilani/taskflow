@@ -90,30 +90,49 @@
     </div>
     <div class="border-[#ecedef] flex flex-col gap-2 border flex-1 bg-white rounded-lg py-3 px-5">
       <h3 class="text-[#292a2d]">Quick Actions</h3>
-      <button
+      <a
+        routerLink="/projectsform"
         class="bg-[#142030] text-white rounded-md border hover:text-[#212123] transition duration-500 hover:bg-white hover:border-[#eeeeee] border-[#0d151e] cursor-pointer text-md font-normal py-1 px-10"
       >
         New Project
-      </button>
-      <button
+      </a>
+      <a
+        routerLink="/tasksform"
         class="text-[#212123] bg-white rounded-md border border-[#eeeeee] transition duration-500 hover:text-white hover:bg-[#142030] hover:border-[#212123] cursor-pointer text-md font-normal py-1 px-10"
       >
         New Tasks
-      </button>
+      </a>
     </div>
   </div>
-  <div class="flex">
-    <div class="border-[#ecedef] border bg-white rounded-lg py-3 px-5">
-      <h2>Recent Projects</h2>
-      <div class="border-[#ecedef] border bg-white flex rounded-lg py-3 px-5">
-        <div>
-          <i class="fa-solid fa-briefcase"></i>
-        </div>
-        <div>
-          <h3>Project Name</h3>
-        </div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 py-4">
+    <div class="border-[#ecedef] border w-full bg-white rounded-lg flex flex-col gap-2 py-3 px-5">
+      <h2 class="mb-2">Recent Projects</h2>
+      @for (project of projects; track $index) {
+        <app-project-card [project]="project"></app-project-card>
+      }
+    </div>
+    <div
+      class="lg:col-span-2 border-[#ecedef] border w-full bg-white rounded-lg flex flex-col gap-2 py-3 px-5"
+    >
+      <h2 class="mb-2">Recent Tasks</h2>
+      <div class="w-full overflow-x-auto">
+        <table class="w-full min-w-175 table-fixed">
+          <thead class="bg-[#f6f7f9] text-[#615d5f]">
+            <tr>
+              <th class="text-left px-3 py-3 text-sm font-semibold w-[35%]">Task</th>
+              <th class="text-left px-3 py-3 text-sm font-semibold w-[20%]">Project</th>
+              <th class="text-left px-3 py-3 text-sm font-semibold w-[13%]">Priority</th>
+              <th class="text-left px-3 py-3 text-sm font-semibold w-[14%]">Due Date</th>
+              <th class="text-left px-3 py-3 text-sm font-semibold w-[18%]">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (task of tasks; track $index) {
+              <tr app-task-card [task]="task" class="border-b border-[#ecedef]"></tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
-    <div></div>
   </div>
 </div>

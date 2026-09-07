@@ -1,1 +1,27 @@
-<p>task-card works!</p>
+<td class="px-3 py-3 max-w-0">
+  <span class="block truncate">
+    {{ task().taskName }}
+  </span>
+</td>
+
+<td class="px-3 py-3 max-w-0">
+  <span class="block truncate">
+    {{ task().project }}
+  </span>
+</td>
+
+<td class="px-3 py-3 whitespace-nowrap">
+  <span [class]="priorityClass()">
+    {{ task().priority }}
+  </span>
+</td>
+
+<td class="px-3 py-3 whitespace-nowrap text-[#615d5f]">
+  {{ task().dueDate }}
+</td>
+
+<td class="px-3 py-3 whitespace-nowrap">
+  <span [class]="statusClass()">
+    {{ task().status }}
+  </span>
+</td>
