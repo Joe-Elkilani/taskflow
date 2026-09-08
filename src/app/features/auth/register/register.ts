@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -19,6 +19,9 @@ import { Router } from '@angular/router';
 export class Register {
   auth = inject(Auth);
   router = inject(Router);
+  isLoading = signal<boolean>(false);
+  errormessage = signal<string>('');
+  successmessage = signal<string>('');
 
   registerForm: FormGroup = new FormGroup(
     {
@@ -42,15 +45,29 @@ export class Register {
     { validators: this.passwordsMatchValidator },
   );
   onSubmit() {
+    this.errormessage.set('');
+    this.successmessage.set('');
     if (this.registerForm.valid) {
+      this.isLoading.set(true);
       this.auth.register(this.registerForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/login']);
+        next: (res) => {
+          this.isLoading.set(false);
+          this.successmessage.set('success');
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1000);
         },
         error: (err) => {
-          console.error('Registration failed:', err);
+          this.isLoading.set(false);
+
+          console.log('Status:', err.status);
+          console.log('Error body:', err.error);
+
+          this.errormessage.set(err.error?.message ?? 'Something went wrong. Please try again.');
         },
       });
+    } else {
+      this.registerForm.markAllAsTouched();
     }
   }
   passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {

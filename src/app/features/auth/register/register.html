@@ -122,13 +122,35 @@
           }
         </div>
       </div>
+      @if (errormessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          {{ errormessage() }}
+        </div>
+      }
+      @if (successmessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-success-soft"
+          role="alert"
+        >
+          {{ successmessage() }}
+        </div>
+      }
       <button
         type="submit"
-        [disabled]="registerForm.invalid"
-        class="text-white bg-[#1e1e1e] box-border cursor-pointer border border-transparent hover:bg-[#1e1e1e]-strong focus:ring-4 focus:ring-[#1e1e1e]-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
+        [disabled]="registerForm.invalid || isLoading()"
+        class="text-white bg-[#1e1e1e] box-border disabled:bg-disabled disabled:text-fg-disabled cursor-pointer border border-transparent hover:bg-[#1e1e1e]-strong focus:ring-4 focus:ring-[#1e1e1e]-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
       >
         Submit
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        }
       </button>
+      <p class="text-center text-sm mt-2">
+        Already have an account? <a routerLink="/login" class="text-brand">Log In</a>
+      </p>
     </form>
   </div>
 </section>

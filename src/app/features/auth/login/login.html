@@ -3,10 +3,8 @@
     <div class="flex items-center justify-center mb-2 w-full">
       <img src="/imgs/taskflow-logo-dark.png" class="w-37.5" alt="TaskFlow Logo" />
     </div>
-    <h1 class="text-2xl font-bold text-heading mb-2 text-center">Create Your Account</h1>
-    <p class="text-body mb-4 text-center">
-      Start managing your projects and tasks<br />with TaskFlow
-    </p>
+    <h1 class="text-2xl font-bold text-heading mb-2 text-center">Welcome back</h1>
+    <p class="text-body mb-4 text-center">Sign in to continue to TaskFlow</p>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="mb-5">
         <input
@@ -24,8 +22,6 @@
               Email is required.
             } @else if (emailcontrol?.hasError('email')) {
               Please enter a valid email address.
-            } @else if (emailcontrol?.hasError('maxlength')) {
-              Email must not exceed 100 characters.
             }
           </p>
         }
@@ -40,30 +36,39 @@
           required
         />
         @let passwordcontrol = loginForm.get('password');
-        @if (passwordcontrol?.invalid && passwordcontrol?.touched) {
-          <div
-            class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle"
-            role="alert"
-          >
-            <span class="sr-only">Danger</span>
-            <div>
-              <span class="font-medium">Ensure that these requirements are met:</span>
-              <ul class="mt-2 list-disc list-outside space-y-1 ps-2.5">
-                <li>At least 8 characters</li>
-                <li>At least one lowercase and one uppercase letter</li>
-                <li>At least one number</li>
-                <li>At least one special character, e.g., ! @ # $ % &</li>
-              </ul>
-            </div>
-          </div>
+        @if (passwordcontrol?.hasError('required')) {
+          Password is required.
         }
       </div>
+      @if (errormessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          {{ errormessage() }}
+        </div>
+      }
+      @if (successmessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-success-soft"
+          role="alert"
+        >
+          {{ successmessage() }}
+        </div>
+      }
       <button
         type="submit"
-        class="text-white bg-[#1e1e1e] box-border cursor-pointer border border-transparent hover:bg-[#1e1e1e]-strong focus:ring-4 focus:ring-[#1e1e1e]-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
+        [disabled]="loginForm.invalid || isLoading()"
+        class="text-white bg-[#1e1e1e] box-border disabled:bg-disabled disabled:text-fg-disabled cursor-pointer border border-transparent hover:bg-[#1e1e1e]-strong focus:ring-4 focus:ring-[#1e1e1e]-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
       >
         Submit
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        }
       </button>
+      <p class="text-center text-sm mt-2">
+        Don't have an account? <a routerLink="/register" class="text-brand">Register</a>
+      </p>
     </form>
   </div>
 </section>
