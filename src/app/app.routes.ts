@@ -2,12 +2,15 @@ import { Routes } from '@angular/router';
 import { Home } from './features/home/home';
 import { PublicLayout } from './layouts/public-layout/public-layout/public-layout';
 import { PrivateLayout } from './layouts/private-layout/private-layout/private-layout';
+import { authGuard } from './core/guards/auth/auth-guard';
+import { loggedGuard } from './core/guards/logged/logged-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: '',
     component: PublicLayout,
+    canActivate: [loggedGuard],
     children: [
       { path: 'home', component: Home, title: 'Home' },
       {
@@ -25,6 +28,7 @@ export const routes: Routes = [
   {
     path: '',
     component: PrivateLayout,
+    canActivate: [authGuard],
     children: [
       {
         path: 'dashboard',
