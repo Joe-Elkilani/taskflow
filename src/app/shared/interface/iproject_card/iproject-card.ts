@@ -1,4 +1,4 @@
-export interface Project {
+export interface IProjectCard {
   icon: string;
   iconColor: string;
   name: string;

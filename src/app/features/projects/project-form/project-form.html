@@ -1,0 +1,79 @@
+<section class="bg-[#f5f6f8] flex items-center justify-center p-10">
+  <div class="w-full max-w-sm bg-white rounded-lg shadow-md p-5">
+    <h1 class="text-2xl font-bold text-heading mb-2 text-center">Create New Project</h1>
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+      <div class="mb-5">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-[#1e1e1e] focus:border-[#1e1e1e] block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="John"
+          formControlName="name"
+          required
+        />
+        @let nameControl = projectForm.get('name');
+        @if (nameControl?.invalid && nameControl?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (nameControl?.hasError('required')) {
+              Name is required.
+            } @else if (nameControl?.hasError('minlength')) {
+              Name must be at least 3 characters.
+            } @else if (nameControl?.hasError('maxlength')) {
+              Name must not exceed 50 characters.
+            }
+          </p>
+        }
+      </div>
+      <div class="mb-5">
+        <textarea
+          id="description"
+          name="description"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-[#1e1e1e] focus:border-[#1e1e1e] block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="Describe your project..."
+          formControlName="description"
+          required
+        ></textarea>
+        @let description = projectForm.get('description');
+        @if (description?.invalid && description?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (description?.hasError('required')) {
+              Description is required.
+            } @else if (description?.hasError('minlength')) {
+              Description must be at least 3 characters.
+            } @else if (description?.hasError('maxlength')) {
+              Description must not exceed 100 characters.
+            }
+          </p>
+        }
+      </div>
+
+      @if (errormessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          {{ errormessage() }}
+        </div>
+      }
+      @if (successmessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-success-soft"
+          role="alert"
+        >
+          {{ successmessage() }}
+        </div>
+      }
+      <button
+        type="submit"
+        [disabled]="projectForm.invalid || isLoading()"
+        class="text-white bg-[#1e1e1e] box-border disabled:bg-disabled disabled:text-fg-disabled cursor-pointer border border-transparent hover:bg-[#1e1e1e]-strong focus:ring-4 focus:ring-[#1e1e1e]-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
+      >
+        Submit
+        @if (isLoading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        }
+      </button>
+    </form>
+  </div>
+</section>

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ProjectCard } from '../projects/project-card/project-card';
-import { Project } from '../../shared/interface/project';
 import { TaskCard } from '../tasks/task-card/task-card';
 import { Task } from '../../shared/interface/task';
 import { RouterLink } from '@angular/router';
+import { IProjectCard } from '../../shared/interface/iproject_card/iproject-card';
 
 @Component({
   imports: [ProjectCard, TaskCard, RouterLink],
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
-  projects: Project[] = [
+  projects: IProjectCard[] = [
     {
       icon: 'fa-solid fa-cart-shopping',
       iconColor: 'text-blue-500',

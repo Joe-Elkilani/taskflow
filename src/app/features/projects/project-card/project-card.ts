@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Project } from '../../../shared/interface/project';
+import { IProjectCard } from '../../../shared/interface/iproject_card/iproject-card';
 
 @Component({
   imports: [],
@@ -8,5 +8,5 @@ import { Project } from '../../../shared/interface/project';
   templateUrl: './project-card.html',
 })
 export class ProjectCard {
-  project = input.required<Project>();
+  project = input.required<IProjectCard>();
 }
