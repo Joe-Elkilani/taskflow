@@ -34,7 +34,7 @@ export class ProjectForm {
       Validators.minLength(3),
       Validators.maxLength(1000),
     ]),
-    progress: new FormControl(0),
+    progress: new FormControl(25),
   });
   onSubmit() {
     this.errormessage.set('');
