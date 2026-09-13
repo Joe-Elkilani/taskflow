@@ -1,1 +1,146 @@
-<p>task-form works!</p>
+<section class="bg-[#f5f6f8] flex items-center justify-center p-10">
+  <div class="w-full max-w-sm bg-white rounded-lg shadow-md p-5">
+    <h1 class="text-2xl font-bold text-heading mb-1 text-center">
+      {{ isEditMode() ? 'Edit Task' : 'Create New Task' }}
+    </h1>
+
+    <p class="text-sm text-body mb-5 text-center">
+      {{ isEditMode() ? 'Update your task details' : 'Add a new task to your workspace' }}
+    </p>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <!-- Task name -->
+      <div class="mb-5">
+        <label for="taskName" class="block mb-1.5 text-sm font-medium text-heading">
+          Task name
+        </label>
+        <input
+          type="text"
+          id="taskName"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="Enter task name"
+          formControlName="taskName"
+        />
+        @let taskNameControl = taskForm.get('taskName');
+        @if (taskNameControl?.invalid && taskNameControl?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (taskNameControl?.hasError('required')) {
+              Task name is required.
+            } @else if (taskNameControl?.hasError('minlength')) {
+              Task name must be at least 3 characters.
+            } @else if (taskNameControl?.hasError('maxlength')) {
+              Task name must not exceed 100 characters.
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="mb-5">
+        <label for="description" class="block mb-1.5 text-sm font-medium text-heading">
+          Description
+        </label>
+        <textarea
+          id="description"
+          rows="3"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+          placeholder="Describe the task..."
+          formControlName="description"
+        ></textarea>
+        @let descriptionControl = taskForm.get('description');
+        @if (descriptionControl?.invalid && descriptionControl?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">
+            @if (descriptionControl?.hasError('required')) {
+              Description is required.
+            } @else if (descriptionControl?.hasError('minlength')) {
+              Description must be at least 3 characters.
+            } @else if (descriptionControl?.hasError('maxlength')) {
+              Description must not exceed 1000 characters.
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Priority + Status -->
+      <div>
+        <label for="status" class="block mb-1.5 text-sm font-medium text-heading"> Status </label>
+        <select
+          id="status"
+          formControlName="status"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+        >
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+
+      <!-- Due date -->
+      <div class="mb-5">
+        <label for="dueDate" class="block mb-1.5 text-sm font-medium text-heading">
+          Due date
+        </label>
+        <input
+          type="date"
+          id="dueDate"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+          formControlName="dueDate"
+        />
+        @let dueDateControl = taskForm.get('dueDate');
+        @if (dueDateControl?.invalid && dueDateControl?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">Due date is required.</p>
+        }
+      </div>
+
+      <div class="mb-5">
+        <label for="projectId" class="block mb-1.5 text-sm font-medium text-heading">
+          Project
+        </label>
+        <select
+          id="projectId"
+          formControlName="projectId"
+          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+        >
+          <option [ngValue]="null" disabled>Select a project</option>
+          @for (project of projects(); track project.id) {
+            <option [ngValue]="project.id">{{ project.name }}</option>
+          }
+        </select>
+        @let projectIdControl = taskForm.get('projectId');
+        @if (projectIdControl?.invalid && projectIdControl?.touched) {
+          <p class="mt-1.5 text-sm text-fg-danger-strong">Please select a project.</p>
+        }
+      </div>
+
+      @if (errormessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+          role="alert"
+        >
+          {{ errormessage() }}
+        </div>
+      }
+      @if (successmessage()) {
+        <div
+          class="p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-success-soft"
+          role="alert"
+        >
+          {{ successmessage() }}
+        </div>
+      }
+
+      <button
+        type="submit"
+        [disabled]="taskForm.invalid || isLoading()"
+        class="text-white bg-brand box-border disabled:bg-disabled disabled:text-fg-disabled cursor-pointer border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
+      >
+        @if (isLoading()) {
+          {{ isEditMode() ? 'Updating...' : 'Creating...' }}
+          <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+        } @else {
+          {{ isEditMode() ? 'Update Task' : 'Create Task' }}
+        }
+      </button>
+    </form>
+  </div>
+</section>

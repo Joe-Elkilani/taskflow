@@ -1,1 +1,206 @@
-<p>task-list works!</p>
+<section class="p-5">
+  <h2 class="text-3xl font-bold text-heading">Tasks</h2>
+
+  <div>
+    <form class="max-w-md mt-3">
+      <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only">
+        Search
+      </label>
+      <div class="relative">
+        <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
+          <svg
+            class="w-4 h-4 text-body"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="search"
+          id="search"
+          [value]="searchItem()"
+          (input)="searchItem.set($any($event.target).value)"
+          class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+          placeholder="Search"
+          required
+        />
+      </div>
+    </form>
+  </div>
+
+  <div class="grid mt-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+    @for (task of tasks_list() | Search: searchItem(); track task.id) {
+      <div
+        [routerLink]="['/task-details', task.id]"
+        class="relative bg-white border border-default-medium rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      >
+        <!-- Priority accent bar -->
+        <span
+          class="absolute inset-y-0 inset-s-0 w-1"
+          [class]="priorityBarClass(task.priority)"
+        ></span>
+
+        <div class="p-4 ps-5">
+          <div class="flex justify-between items-start gap-2">
+            <div class="min-w-0">
+              <span
+                class="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-neutral-secondary-medium text-body mb-2 truncate max-w-full"
+              >
+                {{ task.project }}
+              </span>
+              <h3 class="text-base font-semibold text-heading truncate">
+                {{ task.taskName }}
+              </h3>
+              <p class="text-sm text-body mt-1 line-clamp-2">
+                {{ task.description }}
+              </p>
+            </div>
+
+            <div class="relative shrink-0">
+              <button
+                type="button"
+                (click)="$event.stopPropagation()"
+                [id]="'project-menu-btn-' + $index"
+                [attr.data-dropdown-toggle]="'project-menu-' + $index"
+                class="p-1.5 rounded-base text-body hover:bg-neutral-secondary-medium focus:outline-none focus:ring-2 focus:ring-brand-medium"
+              >
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <span class="sr-only">Task options</span>
+              </button>
+
+              <div
+                [id]="'project-menu-' + $index"
+                class="hidden z-10 bg-white border border-default-medium divide-y divide-default-medium rounded-base shadow-xs w-32"
+              >
+                <ul class="py-1 text-sm text-heading">
+                  <li>
+                    <button
+                      type="button"
+                      (click)="$event.stopPropagation()"
+                      [routerLink]="['/task', task.id, 'edit']"
+                      class="w-full text-start px-4 py-2 hover:bg-neutral-secondary-medium cursor-pointer"
+                    >
+                      Update
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      type="button"
+                      (click)="openDeleteModal($event, task)"
+                      class="w-full text-start px-4 py-2 text-red-600 hover:bg-neutral-secondary-medium cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meta row -->
+          <div class="flex flex-wrap items-center gap-2 mt-4">
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full border"
+              [class]="statusClass(task.status)"
+            >
+              {{ task.status }}
+            </span>
+
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full border"
+              [class]="priorityBadgeClass(task.priority)"
+            >
+              {{ task.priority }}
+            </span>
+
+            <span
+              class="inline-flex items-center gap-1 text-xs font-medium ms-auto"
+              [class.text-red-600]="isOverdue(task)"
+              [class.text-body]="!isOverdue(task)"
+            >
+              <i class="fa-regular fa-calendar"></i>
+              {{ task.dueDate | date: 'MMM d' }}
+            </span>
+          </div>
+
+          <!-- Assignee -->
+          <div class="flex items-center gap-2 mt-3 pt-3 border-t border-default-medium">
+            <span
+              class="flex items-center justify-center w-7 h-7 rounded-full bg-brand-medium text-brand text-xs font-semibold shrink-0"
+            >
+              {{ initials(task.assignedToName) }}
+            </span>
+            <span class="text-xs text-body truncate">{{ task.assignedToName }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (projectToDelete(); as project) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      (click)="closeDeleteModal()"
+    >
+      <div
+        class="bg-white rounded-lg shadow-md w-full max-w-sm p-5"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="flex justify-end">
+          <button
+            type="button"
+            (click)="closeDeleteModal()"
+            class="text-body hover:bg-neutral-secondary-medium rounded-base p-1.5"
+          >
+            <i class="fa-solid fa-xmark"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+
+        <div class="text-center px-4 pb-4">
+          <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 mb-4"></i>
+          <h3 class="text-lg font-medium text-heading mb-1">Delete "{{ project.taskName }}"?</h3>
+          <p class="text-sm text-body mb-5">This action can't be undone.</p>
+
+          @if (deleteError()) {
+            <p class="mb-4 text-sm text-fg-danger-strong">{{ deleteError() }}</p>
+          }
+
+          <div class="flex justify-center gap-3">
+            <button
+              type="button"
+              (click)="closeDeleteModal()"
+              [disabled]="isDeleting()"
+              class="py-2 px-4 text-sm font-medium text-heading bg-white border border-default-medium rounded-base hover:bg-neutral-secondary-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              (click)="confirmDelete()"
+              [disabled]="isDeleting()"
+              class="py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-base hover:bg-red-700 disabled:bg-disabled"
+            >
+              @if (isDeleting()) {
+                Deleting...
+                <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+              } @else {
+                Delete
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</section>

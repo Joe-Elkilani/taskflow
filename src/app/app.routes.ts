@@ -59,9 +59,14 @@ export const routes: Routes = [
         title: 'Tasks',
       },
       {
-        path: 'tasksform',
+        path: 'task/new',
         loadComponent: () => import('./features/tasks/task-form/task-form').then((c) => c.TaskForm),
-        title: 'Tasks Form',
+        title: 'New task',
+      },
+      {
+        path: 'task/:id/edit',
+        loadComponent: () => import('./features/tasks/task-form/task-form').then((c) => c.TaskForm),
+        title: 'Update Task',
       },
       {
         path: 'project-details/:id',
@@ -71,12 +76,12 @@ export const routes: Routes = [
           ),
         title: 'Project Details',
       },
-      // {
-      //   path: 'tasks/:id',
-      //   loadComponent: () =>
-      //     import('./features/tasks/task-details/task-details').then((c) => c.TaskDetails),
-      //   title: 'Task Details',
-      // },
+      {
+        path: 'task-details/:id',
+        loadComponent: () =>
+          import('./features/tasks/task-details/task-details').then((c) => c.TaskDetails),
+        title: 'task Details',
+      },
       {
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((c) => c.Settings),

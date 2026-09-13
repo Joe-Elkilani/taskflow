@@ -6,6 +6,9 @@ import { initFlowbite } from 'flowbite';
 import { RouterLink } from '@angular/router';
 import { SearchPipe } from '../../../shared/pipes/search-pipe';
 import { FormsModule } from '@angular/forms';
+import { Tasks } from '../../../core/services/tasks/tasks';
+import { forkJoin } from 'rxjs';
+import { Itask } from '../../../shared/interface/tasks/itask';
 
 @Component({
   imports: [RouterLink, SearchPipe, FormsModule],
@@ -18,11 +21,11 @@ export class ProjectList {
   readonly projects_list = signal<Project[]>([]);
   private flowbite = inject(Flowbite);
   readonly searchItem = signal<string>('');
+  private readonly tasks = inject(Tasks);
 
   projectToDelete = signal<Project | null>(null);
   isDeleting = signal<boolean>(false);
   deleteError = signal<string>('');
-
   constructor() {
     effect(() => {
       const list = this.projects_list();
@@ -34,15 +37,31 @@ export class ProjectList {
     });
   }
   ngOnInit() {
-    this.projects.getAllProjects().subscribe({
-      next: (res) => {
-        this.projects_list.set(res);
+    forkJoin({
+      projects: this.projects.getAllProjects(),
+      tasks: this.tasks.getAllTasks(),
+    }).subscribe({
+      next: ({ projects, tasks }) => {
+        const withProgress = projects.map((project) => ({
+          ...project,
+          progress: this.computeProgress(project, tasks),
+        }));
+        this.projects_list.set(withProgress);
       },
       error: (err) => {
         console.log(err);
       },
     });
   }
+  private computeProgress(project: Project, tasks: Itask[]): number {
+    const projectTasks = tasks.filter((t) => t.project === project.name);
+    if (projectTasks.length === 0) return 0;
+
+    const completed = projectTasks.filter((t) => t.status?.toLowerCase() === 'completed').length;
+
+    return Math.round((completed / projectTasks.length) * 100);
+  }
+
   openDeleteModal(event: Event, project: Project) {
     event.stopPropagation();
     this.deleteError.set('');
