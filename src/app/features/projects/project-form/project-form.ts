@@ -42,7 +42,7 @@ export class ProjectForm {
     if (this.projectForm.valid) {
       this.isLoading.set(true);
       this.projects.newProject(this.projectForm.value).subscribe({
-        next: (res) => {
+        next: () => {
           this.isLoading.set(false);
           this.successmessage.set('Project created successfully!');
           setTimeout(() => {
