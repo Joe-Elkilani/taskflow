@@ -1,6 +1,8 @@
 <section class="bg-[#f5f6f8] flex items-center justify-center p-10">
   <div class="w-full max-w-sm bg-white rounded-lg shadow-md p-5">
-    <h1 class="text-2xl font-bold text-heading mb-2 text-center">Create New Project</h1>
+    <h1 class="text-2xl font-bold text-heading mb-1 text-center">Create New Project</h1>
+
+    <p class="text-sm text-body mb-5 text-center">Add a new project to your workspace</p>
     <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
       <div class="mb-5">
         <input
@@ -8,7 +10,7 @@
           id="name"
           name="name"
           class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-[#1e1e1e] focus:border-[#1e1e1e] block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-          placeholder="John"
+          placeholder="Enter project name"
           formControlName="name"
           required
         />
@@ -20,7 +22,7 @@
             } @else if (nameControl?.hasError('minlength')) {
               Name must be at least 3 characters.
             } @else if (nameControl?.hasError('maxlength')) {
-              Name must not exceed 50 characters.
+              Name must not exceed 100 characters.
             }
           </p>
         }
@@ -42,7 +44,7 @@
             } @else if (description?.hasError('minlength')) {
               Description must be at least 3 characters.
             } @else if (description?.hasError('maxlength')) {
-              Description must not exceed 100 characters.
+              Description must not exceed 1000 characters.
             }
           </p>
         }
@@ -69,9 +71,11 @@
         [disabled]="projectForm.invalid || isLoading()"
         class="text-white bg-[#1e1e1e] box-border disabled:bg-disabled disabled:text-fg-disabled cursor-pointer border border-transparent hover:bg-[#1e1e1e]-strong focus:ring-4 focus:ring-[#1e1e1e]-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none w-full"
       >
-        Submit
         @if (isLoading()) {
-          <i class="fa-solid fa-spinner fa-spin"></i>
+          Creating...
+          <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+        } @else {
+          Create Project
         }
       </button>
     </form>

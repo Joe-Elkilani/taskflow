@@ -1,1 +1,149 @@
-<p>project-details works!</p>
+@if (project_data()) {
+  <section class="p-4 md:p-6 bg-[#eef1f6] min-h-screen">
+    <p class="text-sm text-slate-400">
+      Projects <span class="text-slate-900 font-medium">/ Project Details</span>
+    </p>
+
+    <button
+      routerLink="/projects"
+      class="flex items-center gap-2 bg-white border border-slate-200 cursor-pointer text-slate-700 font-semibold text-sm px-4 py-2.5 my-4 rounded-xl hover:bg-slate-50 transition-colors"
+    >
+      <i class="fa-solid fa-arrow-left-long"></i>
+      Back to Projects
+    </button>
+
+    <!-- Main project card -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+      <div class="flex justify-between items-start gap-2">
+        <div class="min-w-0 flex items-center">
+          <div
+            class="me-4 bg-slate-100 rounded-full w-16 h-16 flex justify-center items-center shrink-0"
+          >
+            <i class="fa-solid fa-folder text-xl text-slate-800"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-2xl font-bold text-slate-900 truncate">
+              {{ project_data()?.name }}
+            </h3>
+            <p class="text-sm text-slate-400 mt-1 line-clamp-2">
+              {{ project_data()?.description }}
+            </p>
+          </div>
+        </div>
+
+        <div class="relative shrink-0">
+          <button
+            type="button"
+            id="project-menu-btn"
+            data-dropdown-toggle="project-menu"
+            class="p-2.5 rounded-lg bg-slate-100 text-slate-500 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          >
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+            <span class="sr-only">Project options</span>
+          </button>
+
+          <div
+            id="project-menu"
+            class="hidden z-10 bg-white border border-slate-200 divide-y divide-slate-100 rounded-lg shadow-lg w-32"
+          >
+            <ul class="py-1 text-sm text-slate-900">
+              <li>
+                <button type="button" class="w-full text-start px-4 py-2 hover:bg-slate-50">
+                  Update
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  class="w-full text-start px-4 py-2 text-red-600 hover:bg-slate-50"
+                >
+                  Delete
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-slate-500">Progress</span>
+          <span class="text-sm font-bold text-slate-900">{{ project_data()?.progress }}%</span>
+        </div>
+        <div class="bg-slate-100 h-2.5 rounded-full overflow-hidden">
+          <div
+            [style.width]="project_data()?.progress + '%'"
+            class="bg-blue-600 h-full rounded-full transition-all"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+      <div class="bg-white flex items-center rounded-2xl gap-4 p-5 shadow-sm">
+        <div class="w-12 h-12 flex justify-center items-center bg-blue-50 rounded-xl shrink-0">
+          <i class="fa-regular fa-square-check text-lg text-blue-600"></i>
+        </div>
+        <div>
+          <h3 class="text-sm text-slate-400">Tasks</h3>
+          <h4 class="text-2xl font-bold text-slate-900">{{ project_data()?.tasksCount }}</h4>
+        </div>
+      </div>
+
+      <div class="bg-white flex items-center rounded-2xl gap-4 p-5 shadow-sm">
+        <div class="w-12 h-12 flex justify-center items-center bg-green-50 rounded-xl shrink-0">
+          <i class="fa-solid fa-chart-pie text-lg text-green-600"></i>
+        </div>
+        <div>
+          <h3 class="text-sm text-slate-400">Progress</h3>
+          <h4 class="text-2xl font-bold text-slate-900">{{ project_data()?.progress }}%</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Information -->
+    <div class="bg-white rounded-2xl p-6 mt-4 shadow-sm">
+      <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+        <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-circle-info text-sm text-slate-500"></i>
+        </div>
+        <h2 class="text-lg font-bold text-slate-900">Project Information</h2>
+      </div>
+
+      <div class="flex items-center justify-between py-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+            <i class="fa-solid fa-hashtag text-sm text-slate-600"></i>
+          </div>
+          <span class="text-slate-400">Project ID</span>
+        </div>
+        <span class="font-bold text-slate-900">#{{ project_data()?.id }}</span>
+      </div>
+
+      <div class="flex items-center justify-between py-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+            <i class="fa-regular fa-calendar text-sm text-slate-600"></i>
+          </div>
+          <span class="text-slate-400">Created</span>
+        </div>
+        <span class="font-bold text-slate-900">{{
+          project_data()?.createdAt | date: 'MMM d, y'
+        }}</span>
+      </div>
+
+      <div class="flex items-center justify-between py-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+            <i class="fa-solid fa-rotate text-sm text-slate-600"></i>
+          </div>
+          <span class="text-slate-400">Last Updated</span>
+        </div>
+        <span class="font-bold text-slate-900">{{
+          project_data()?.updatedAt | date: 'MMM d, y'
+        }}</span>
+      </div>
+    </div>
+  </section>
+}

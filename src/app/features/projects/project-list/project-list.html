@@ -28,24 +28,21 @@
         <input
           type="search"
           id="search"
+          [value]="searchItem()"
+          (input)="searchItem.set($any($event.target).value)"
           class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
           placeholder="Search"
           required
         />
-        <button
-          type="button"
-          class="absolute inset-e-2.5 bottom-1.5 cursor-pointer text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none"
-        >
-          Search
-        </button>
       </div>
     </form>
   </div>
 
   <div class="grid mt-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-    @for (project of projects_list(); track $index) {
+    @for (project of projects_list() | Search: searchItem(); track $index) {
       <div
-        class="bg-white border border-default-medium rounded-md p-4 transition-shadow hover:shadow-md"
+        [routerLink]="['/project-details', project.id]"
+        class="bg-white border border-default-medium cursor-pointer rounded-md p-4 transition-shadow hover:shadow-md"
       >
         <div class="flex justify-between items-start gap-2">
           <div class="min-w-0">
@@ -60,6 +57,7 @@
           <div class="relative shrink-0">
             <button
               type="button"
+              (click)="$event.stopPropagation()"
               [id]="'project-menu-btn-' + $index"
               [attr.data-dropdown-toggle]="'project-menu-' + $index"
               class="p-1.5 rounded-base text-body hover:bg-neutral-secondary-medium focus:outline-none focus:ring-2 focus:ring-brand-medium"

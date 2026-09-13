@@ -34,7 +34,7 @@ export class ProjectForm {
       Validators.minLength(3),
       Validators.maxLength(1000),
     ]),
-    progress: new FormControl(25),
+    progress: new FormControl(0),
   });
   onSubmit() {
     this.errormessage.set('');
@@ -44,8 +44,7 @@ export class ProjectForm {
       this.projects.newProject(this.projectForm.value).subscribe({
         next: (res) => {
           this.isLoading.set(false);
-          this.successmessage.set('success');
-          console.log(res);
+          this.successmessage.set('Project created successfully!');
           setTimeout(() => {
             this.router.navigate(['/projects']);
           }, 1000);

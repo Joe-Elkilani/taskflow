@@ -57,14 +57,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/tasks/task-form/task-form').then((c) => c.TaskForm),
         title: 'Tasks Form',
       },
-      // {
-      //   path: 'projects/:id',
-      //   loadComponent: () =>
-      //     import('./features/projects/project-details/project-details').then(
-      //       (c) => c.ProjectDetails,
-      //     ),
-      //   title: 'Project Details',
-      // },
+      {
+        path: 'project-details/:id',
+        loadComponent: () =>
+          import('./features/projects/project-details/project-details').then(
+            (c) => c.ProjectDetails,
+          ),
+        title: 'Project Details',
+      },
       // {
       //   path: 'tasks/:id',
       //   loadComponent: () =>
