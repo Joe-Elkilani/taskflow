@@ -42,10 +42,16 @@ export const routes: Routes = [
         title: 'Projects',
       },
       {
-        path: 'projectsform',
+        path: 'projects/new',
         loadComponent: () =>
           import('./features/projects/project-form/project-form').then((c) => c.ProjectForm),
-        title: 'Projects Form',
+        title: 'New Project',
+      },
+      {
+        path: 'projects/:id/edit',
+        loadComponent: () =>
+          import('./features/projects/project-form/project-form').then((c) => c.ProjectForm),
+        title: 'Update Project',
       },
       {
         path: 'tasks',

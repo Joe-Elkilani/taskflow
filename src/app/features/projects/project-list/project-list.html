@@ -74,7 +74,9 @@
                 <li>
                   <button
                     type="button"
-                    class="w-full text-start px-4 py-2 hover:bg-neutral-secondary-medium"
+                    (click)="$event.stopPropagation()"
+                    [routerLink]="['/projects', project.id, 'edit']"
+                    class="w-full text-start px-4 py-2 hover:bg-neutral-secondary-medium cursor-pointer"
                   >
                     Update
                   </button>
@@ -82,7 +84,8 @@
                 <li>
                   <button
                     type="button"
-                    class="w-full text-start px-4 py-2 text-red-600 hover:bg-neutral-secondary-medium"
+                    (click)="openDeleteModal($event, project)"
+                    class="w-full text-start px-4 py-2 text-red-600 hover:bg-neutral-secondary-medium cursor-pointer"
                   >
                     Delete
                   </button>
@@ -107,4 +110,62 @@
       </div>
     }
   </div>
+  @if (projectToDelete(); as project) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      (click)="closeDeleteModal()"
+    >
+      <div
+        class="bg-white rounded-lg shadow-md w-full max-w-sm p-5"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="flex justify-end">
+          <button
+            type="button"
+            (click)="closeDeleteModal()"
+            class="text-body hover:bg-neutral-secondary-medium rounded-base p-1.5"
+          >
+            <i class="fa-solid fa-xmark"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+
+        <div class="text-center px-4 pb-4">
+          <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 mb-4"></i>
+          <h3 class="text-lg font-medium text-heading mb-1">Delete "{{ project.name }}"?</h3>
+          <p class="text-sm text-body mb-5">
+            This action can't be undone. All tasks in this project will be deleted too.
+          </p>
+
+          @if (deleteError()) {
+            <p class="mb-4 text-sm text-fg-danger-strong">{{ deleteError() }}</p>
+          }
+
+          <div class="flex justify-center gap-3">
+            <button
+              type="button"
+              (click)="closeDeleteModal()"
+              [disabled]="isDeleting()"
+              class="py-2 px-4 text-sm font-medium text-heading bg-white border border-default-medium rounded-base hover:bg-neutral-secondary-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              (click)="confirmDelete()"
+              [disabled]="isDeleting()"
+              class="py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-base hover:bg-red-700 disabled:bg-disabled"
+            >
+              @if (isDeleting()) {
+                Deleting...
+                <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+              } @else {
+                Delete
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 </section>

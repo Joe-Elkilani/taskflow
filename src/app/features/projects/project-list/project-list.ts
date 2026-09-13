@@ -19,6 +19,10 @@ export class ProjectList {
   private flowbite = inject(Flowbite);
   readonly searchItem = signal<string>('');
 
+  projectToDelete = signal<Project | null>(null);
+  isDeleting = signal<boolean>(false);
+  deleteError = signal<string>('');
+
   constructor() {
     effect(() => {
       const list = this.projects_list();
@@ -36,6 +40,33 @@ export class ProjectList {
       },
       error: (err) => {
         console.log(err);
+      },
+    });
+  }
+  openDeleteModal(event: Event, project: Project) {
+    event.stopPropagation();
+    this.deleteError.set('');
+    this.projectToDelete.set(project);
+  }
+
+  closeDeleteModal() {
+    this.projectToDelete.set(null);
+  }
+  confirmDelete() {
+    const project = this.projectToDelete();
+    if (!project) return;
+
+    this.isDeleting.set(true);
+    this.projects.deleteProjectById(String(project.id)).subscribe({
+      next: () => {
+        this.isDeleting.set(false);
+        this.projects_list.update((list) => list.filter((p) => p.id !== project.id));
+        this.closeDeleteModal();
+      },
+      error: (err) => {
+        this.isDeleting.set(false);
+        console.log(err);
+        this.deleteError.set(err.error?.message ?? 'Could not delete project. Try again.');
       },
     });
   }

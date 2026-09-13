@@ -21,7 +21,7 @@ export class Projects {
   putProjectBYId(id: string, data: object): Observable<Project> {
     return this.httpClient.put<Project>(`${environment.apiUrl}projects/${id}`, data);
   }
-  deleteProjectById(id: string): Observable<Project> {
-    return this.httpClient.delete<Project>(`${environment.apiUrl}projects/${id}`);
+  deleteProjectById(id: string) {
+    return this.httpClient.delete(`${environment.apiUrl}projects/${id}`);
   }
 }
