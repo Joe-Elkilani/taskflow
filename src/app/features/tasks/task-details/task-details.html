@@ -1,1 +1,170 @@
-<p>task-details works!</p>
+<section class="p-5">
+  @if (isLoading()) {
+    <div class="flex items-center justify-center py-20 text-body">
+      <i class="fa-solid fa-spinner fa-spin text-2xl"></i>
+    </div>
+  } @else if (errormessage() && !task()) {
+    <div class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+      {{ errormessage() }}
+    </div>
+  } @else if (task(); as t) {
+    <a
+      routerLink="/tasks"
+      class="inline-flex items-center gap-1.5 text-sm text-body hover:text-heading mb-4"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+      Back to tasks
+    </a>
+
+    <div class="bg-white border border-default-medium rounded-lg p-5 max-w-2xl">
+      <div class="flex justify-between items-start gap-3">
+        <div class="min-w-0">
+          <span
+            class="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-neutral-secondary-medium text-body mb-2"
+          >
+            {{ t.project }}
+          </span>
+          <h1 class="text-2xl font-bold text-heading">{{ t.taskName }}</h1>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <a
+            [routerLink]="['/task', t.id, 'edit']"
+            class="py-2 px-3 text-sm font-medium text-heading bg-white border border-default-medium rounded-base hover:bg-neutral-secondary-medium"
+          >
+            <i class="fa-solid fa-pen"></i>
+            <span class="ms-1.5">Edit</span>
+          </a>
+          <button
+            type="button"
+            (click)="openDeleteModal()"
+            class="py-2 px-3 text-sm font-medium text-red-600 bg-white border border-default-medium rounded-base hover:bg-neutral-secondary-medium"
+          >
+            <i class="fa-solid fa-trash"></i>
+            <span class="ms-1.5">Delete</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="flex flex-wrap items-center gap-2 mt-4">
+        <span
+          class="inline-flex items-center text-xs font-medium px-2 py-1 rounded-full border"
+          [class]="statusClass(t.status)"
+        >
+          {{ t.status }}
+        </span>
+        <span
+          class="inline-flex items-center text-xs font-medium px-2 py-1 rounded-full border"
+          [class]="priorityBadgeClass(t.priority)"
+        >
+          {{ t.priority }} priority
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 text-xs font-medium"
+          [class.text-red-600]="isOverdue(t)"
+          [class.text-body]="!isOverdue(t)"
+        >
+          <i class="fa-regular fa-calendar"></i>
+          Due {{ t.dueDate | date: 'MMM d, y' }}
+          @if (isOverdue(t)) {
+            <span class="font-semibold">· Overdue</span>
+          }
+        </span>
+      </div>
+
+      <!-- Description -->
+      <div class="mt-5 pt-5 border-t border-default-medium">
+        <h2 class="text-sm font-semibold text-heading mb-2">Description</h2>
+        <p class="text-sm text-body leading-relaxed whitespace-pre-line">{{ t.description }}</p>
+      </div>
+
+      <!-- Assignee -->
+      <div class="mt-5 pt-5 border-t border-default-medium flex items-center gap-3">
+        <span
+          class="flex items-center justify-center w-9 h-9 rounded-full bg-brand-medium text-brand text-sm font-semibold shrink-0"
+        >
+          {{ initials(t.assignedToName) }}
+        </span>
+        <div>
+          <p class="text-sm font-medium text-heading">{{ t.assignedToName }}</p>
+          <p class="text-xs text-body">Assignee</p>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div
+        class="flex flex-wrap gap-x-6 gap-y-1 mt-5 pt-5 border-t border-default-medium text-xs text-body"
+      >
+        <span
+          ><i class="fa-regular fa-calendar-plus me-1"></i>Created
+          {{ t.createdAt | date: 'MMM d, y' }}</span
+        >
+        <span
+          ><i class="fa-regular fa-clock me-1"></i>Updated
+          {{ t.updatedAt | date: 'MMM d, y' }}</span
+        >
+        <a
+          [routerLink]="['/project-details', t.projectId]"
+          class="hover:text-heading hover:underline"
+        >
+          <i class="fa-solid fa-folder me-1"></i>View project
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Delete modal -->
+  @if (showDeleteModal() && task(); as t) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      (click)="closeDeleteModal()"
+    >
+      <div
+        class="bg-white rounded-lg shadow-md w-full max-w-sm p-5"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="flex justify-end">
+          <button
+            type="button"
+            (click)="closeDeleteModal()"
+            class="text-body hover:bg-neutral-secondary-medium rounded-base p-1.5"
+          >
+            <i class="fa-solid fa-xmark"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="text-center px-4 pb-4">
+          <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 mb-4"></i>
+          <h3 class="text-lg font-medium text-heading mb-1">Delete "{{ t.taskName }}"?</h3>
+          <p class="text-sm text-body mb-5">This action can't be undone.</p>
+          @if (deleteError()) {
+            <p class="mb-4 text-sm text-fg-danger-strong">{{ deleteError() }}</p>
+          }
+          <div class="flex justify-center gap-3">
+            <button
+              type="button"
+              (click)="closeDeleteModal()"
+              [disabled]="isDeleting()"
+              class="py-2 px-4 text-sm font-medium text-heading bg-white border border-default-medium rounded-base hover:bg-neutral-secondary-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              (click)="confirmDelete()"
+              [disabled]="isDeleting()"
+              class="py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-base hover:bg-red-700 disabled:bg-disabled"
+            >
+              @if (isDeleting()) {
+                Deleting... <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+              } @else {
+                Delete
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</section>
