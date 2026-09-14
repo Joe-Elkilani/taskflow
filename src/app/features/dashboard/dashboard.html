@@ -4,6 +4,12 @@
   </a>
 </div>
 <div class="p-4">
+  @if (errormessage()) {
+    <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+      {{ errormessage() }}
+    </div>
+  }
+
   <div class="flex items-center gap-3 flex-wrap text-center sm:text-left justify-between">
     <div>
       <h1 class="text-4xl text-[#2c2d34] font-extrabold">Welcome Back, Yousef!</h1>
@@ -11,33 +17,26 @@
         <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
           <h3 class="text-lg">Total Projects</h3>
           <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">
-            8
-            <div class="flex items-center gap-2 px-3 py-2 bg-green-50 rounded-lg">
-              <svg class="w-10 h-7 text-green-700/80 opacity-70" viewBox="0 0 64 32" fill="none">
-                <path
-                  d="M2 25 L12 20 L20 22 L30 12 L38 16 L48 7 L58 10"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-
-              <span class="text-green-700/80 text-sm font-medium"> w trend </span>
-            </div>
+            {{ totalProjects() }}
           </div>
         </div>
         <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
           <h3 class="text-lg">Open Tasks</h3>
-          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">28</div>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">
+            {{ openTasks() }}
+          </div>
         </div>
         <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
           <h3 class="text-lg">Due Today</h3>
-          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">4</div>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">
+            {{ dueToday() }}
+          </div>
         </div>
         <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
           <h3 class="text-lg">Completed Tasks</h3>
-          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">115</div>
+          <div class="flex items-center gap-2 text-2xl font-bold text-[#2c2d34]">
+            {{ completedTasks() }}
+          </div>
         </div>
       </div>
     </div>
@@ -57,11 +56,18 @@
       </a>
     </div>
   </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 py-4">
     <div class="border-[#ecedef] border w-full bg-white rounded-lg flex flex-col gap-2 py-3 px-5">
       <h2 class="mb-2">Recent Projects</h2>
-      @for (project of projects; track $index) {
-        <app-project-card [project]="project"></app-project-card>
+      @if (isLoading()) {
+        <p class="text-sm text-[#615d5f]">Loading...</p>
+      } @else if (projects().length === 0) {
+        <p class="text-sm text-[#615d5f]">No projects yet.</p>
+      } @else {
+        @for (project of projects(); track $index) {
+          <app-project-card [project]="project"></app-project-card>
+        }
       }
     </div>
     <div
@@ -80,8 +86,20 @@
             </tr>
           </thead>
           <tbody>
-            @for (task of tasks; track $index) {
-              <tr app-task-card [task]="task" class="border-b border-[#ecedef]"></tr>
+            @if (isLoading()) {
+              <tr>
+                <td colspan="5" class="px-3 py-4 text-sm text-[#615d5f] text-center">Loading...</td>
+              </tr>
+            } @else if (tasks().length === 0) {
+              <tr>
+                <td colspan="5" class="px-3 py-4 text-sm text-[#615d5f] text-center">
+                  No tasks yet.
+                </td>
+              </tr>
+            } @else {
+              @for (task of tasks(); track $index) {
+                <tr app-task-card [task]="task" class="border-b border-[#ecedef]"></tr>
+              }
             }
           </tbody>
         </table>
