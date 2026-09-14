@@ -9,6 +9,7 @@ import { Project } from '../../shared/interface/project/project';
 import { Itask } from '../../shared/interface/tasks/itask';
 import { IProjectCard } from '../../shared/interface/iproject_card/iproject-card';
 import { Task } from '../../shared/interface/task';
+import { Auth } from '../../core/services/auth/auth';
 
 const PROJECT_STYLES: { icon: string; color: string }[] = [
   { icon: 'fa-solid fa-diagram-project', color: 'text-blue-500' },
@@ -27,6 +28,9 @@ const PROJECT_STYLES: { icon: string; color: string }[] = [
 export class Dashboard {
   private readonly projectsService = inject(Projects);
   private readonly tasksService = inject(Tasks);
+  private readonly auth = inject(Auth);
+
+  currentUser = this.auth.currentUser;
 
   private readonly allProjects = signal<Project[]>([]);
   private readonly allTasks = signal<Itask[]>([]);
@@ -76,6 +80,10 @@ export class Dashboard {
   );
 
   ngOnInit(): void {
+    if (!this.currentUser()) {
+      this.auth.fetchCurrentUser().subscribe();
+    }
+
     forkJoin({
       projects: this.projectsService.getAllProjects(),
       tasks: this.tasksService.getAllTasks(),
