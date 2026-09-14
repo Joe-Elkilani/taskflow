@@ -34,13 +34,58 @@
         />
       </div>
     </form>
+
     <div class="flex items-center gap-4">
       <a href="#"><i class="fa-regular fa-bell text-[#615d5f] text-[22px]"></i></a>
-      <a href="#"><i class="fa-regular fa-circle-question text-[#615d5f] text-[22px]"></i></a>
-      <div class="flex items-center gap-2">
-        <h4 class="capitalize text-xl text-[#615d5f]">yousef</h4>
-        <img src="/imgs/avatar.jpg" alt="Profile Image" class="w-8 h-8 rounded-full" />
-        <i class="fa-solid fa-chevron-down text-[#615d5f] text-sm"></i>
+      <a routerLink="/settings"
+        ><i class="fa-regular fa-circle-question text-[#615d5f] text-[22px]"></i
+      ></a>
+
+      <div class="relative">
+        <button type="button" (click)="toggleMenu()" class="flex items-center gap-2 cursor-pointer">
+          <h4 class="capitalize text-xl text-[#615d5f]">
+            {{ currentUser()?.fullName ?? 'Guest' }}
+          </h4>
+          <span
+            class="flex items-center justify-center w-8 h-8 rounded-full bg-brand-medium text-brand text-xs font-semibold shrink-0"
+          >
+            {{ initials() }}
+          </span>
+          <i
+            class="fa-solid fa-chevron-down text-[#615d5f] text-sm transition-transform"
+            [class.rotate-180]="isMenuOpen"
+          ></i>
+        </button>
+
+        @if (isMenuOpen) {
+          <div
+            (click)="$event.stopPropagation()"
+            class="absolute end-0 mt-2 z-20 bg-white border border-default-medium divide-y divide-default-medium rounded-base shadow-xs w-44"
+          >
+            <ul class="py-1 text-sm text-heading">
+              <li>
+                <a
+                  routerLink="/settings"
+                  (click)="closeMenu()"
+                  class="flex items-center gap-2 px-4 py-2 hover:bg-neutral-secondary-medium cursor-pointer"
+                >
+                  <i class="fa-solid fa-gear w-4"></i>
+                  Settings
+                </a>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  (click)="logout()"
+                  class="w-full text-start flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-neutral-secondary-medium cursor-pointer"
+                >
+                  <i class="fa-solid fa-arrow-right-from-bracket w-4"></i>
+                  Log out
+                </button>
+              </li>
+            </ul>
+          </div>
+        }
       </div>
     </div>
   </div>
