@@ -23,7 +23,6 @@ export class Settings {
       .join('');
   });
 
-  // Local-only UI state (not persisted to the backend yet)
   emailAlerts = signal<boolean>(true);
   taskReminders = signal<boolean>(true);
   weeklyDigest = signal<boolean>(false);

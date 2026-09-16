@@ -12,7 +12,9 @@
 
   <div class="flex items-center gap-3 flex-wrap text-center sm:text-left justify-between">
     <div>
-      <h1 class="text-4xl text-[#2c2d34] font-extrabold">Welcome Back, Yousef!</h1>
+      <h1 class="text-3xl text-[#2c2d34] font-bold">
+        Welcome Back, {{ currentUser()?.fullName ?? 'there' }}!
+      </h1>
       <div class="flex items-center gap-5 flex-wrap mt-3">
         <div class="border-[#ecedef] border bg-white rounded-lg py-3 w-48 h-24 px-5">
           <h3 class="text-lg">Total Projects</h3>
